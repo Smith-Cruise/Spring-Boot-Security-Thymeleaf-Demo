@@ -9,7 +9,6 @@ public class CustomUser extends User {
 
     private int id;
 
-
     public CustomUser(int id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;

@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
-@IsUser
+@IsUser // 表明该控制器下所有请求都需要登入后才能访问
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     @GetMapping("/home")
     public String home(Model model) {
+        // 方法一：通过SecurityContextHolder获取
         CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("user", user);
         return "user/home";
@@ -32,6 +33,7 @@ public class UserController {
     @GetMapping("/editor")
     @IsEditor
     public String editor(Authentication authentication, Model model) {
+        // 方法二：通过方法注入的形式获取Authentication
         CustomUser user = (CustomUser)authentication.getPrincipal();
         model.addAttribute("user", user);
         return "user/editor";
@@ -40,6 +42,7 @@ public class UserController {
     @GetMapping("/reviewer")
     @IsReviewer
     public String reviewer(Principal principal, Model model) {
+        // 方法三：同样通过方法注入的方法，注意要转型，此方法很二，不推荐
         CustomUser user = (CustomUser) ((Authentication)principal).getPrincipal();
         model.addAttribute("user", user);
         return "user/reviewer";
@@ -48,6 +51,7 @@ public class UserController {
     @GetMapping("/admin")
     @IsAdmin
     public String admin() {
+        // 方法四：通过Thymeleaf的Security标签进行，详情见admin.html
         return "user/admin";
     }
 }
