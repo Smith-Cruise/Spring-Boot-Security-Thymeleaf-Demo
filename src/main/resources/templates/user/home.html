@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<p>This is a home page.</p>
+<p>Id: <th:block th:text="${user.getId()}"></th:block></p>
+<p>Username: <th:block th:text="${user.getUsername()}"></th:block></p>
+<p>Role: <th:block th:text="${user.getAuthorities()}"></th:block></p>
+<a th:href="@{/logout}">Logout</a><br/>
+<a th:href="@{/user/home}">Home</a><br/>
+<a th:href="@{/user/editor}">Editor</a><br/>
+<a th:href="@{/user/reviewer}">Reviewer</a><br/>
+<a th:href="@{/user/admin}">Admin</a><br/>
+</body>
+</html>
