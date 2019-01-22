@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 必须有此方法，Spring Security官方规定必须要有一个密码加密方式。
      * 注意：例如这里用了BCryptPasswordEncoder()的加密方法，那么在保存用户密码的时候也必须使用这种方法，确保前后一致。
+     * 详情参见项目中Database.java中保存用户的逻辑
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,10 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 配置Spring Security，下面说明几点注意事项。
      * 1. Spring Security 默认是开启了CSRF的，此时我们提交的POST表单必须有隐藏的字段来传递CSRF，
      * 而且在logout中，我们必须通过POST到 /logout 的方法来退出用户，详见我们的login.html和logout.html.
-     * 2. 开启了rememberMe()功能后，如果我们自定义了rememberMeServices()方法，例如下面，我们只能在
-     * TokenBasedRememberMeServices中设置cookie名称、过期时间等相关配置,
-     * 如果如 .and().rememberMe().rememberMeServices(getRememberMeServices()).rememberMeCookieName("cookie-name")这样
-     * 程序会报错。
+     * 2. 开启了rememberMe()功能后，我们必须提供rememberMeServices，例如下面的getRememberMeServices()方法，
+     * 而且我们只能在TokenBasedRememberMeServices中设置cookie名称、过期时间等相关配置,如果在别的地方同时配置，会报错。
+     * 错误示例：xxxx.and().rememberMe().rememberMeServices(getRememberMeServices()).rememberMeCookieName("cookie-name")
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -56,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .rememberMe() // 开启记住密码功能
-                .rememberMeServices(getRememberMeServices())
-                .key(SECRET_KEY) // 此SECRET需要和生成密钥的Token相同
+                .rememberMeServices(getRememberMeServices()) // 必须提供
+                .key(SECRET_KEY) // 此SECRET需要和生成TokenBasedRememberMeServices的密钥相同
                 .and()
                 /*
                  * 默认允许所有路径所有人都可以访问，确保静态资源的正常访问。

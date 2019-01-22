@@ -10,7 +10,7 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 实现了以下功能：
 
 * 基于注解的权限控制
-* 在Thymeleaf中使用Security的标签
+* 在Thymeleaf中使用Spring Security的标签
 * 自定义权限注解
 * 记住密码功能
 
@@ -18,7 +18,7 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 ## 项目演示
 
-如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问。网址规则自行看教程后面。
+如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问，网址规则自行看教程后面
 
 ***首页***
 
@@ -55,12 +55,12 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 3. `BasicAuthenticationFilter.class`
 4. `ExceptionTranslation.class` 异常解释器
 5. `FilterSecurityInterceptor.class` 拦截器最终决定请求能否通过
-6. `Controller` 我们最后的控制器
+6. `Controller` 我们最后自己编写的控制器
 
 ***相关类说明***
 
-* `User.class` 注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的`CustomUser.java`
-* `UserDetailsService` 也是Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()`这个方法。详见代码中的`CustomUserDetailsService.java`。
+* `User.class` ：注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的`CustomUser.java`
+* `UserDetailsService.class`： Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST过来的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()`这个方法。详见代码中的`CustomUserDetailsService.java`。
 
 ## 项目逻辑
 
@@ -73,7 +73,15 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 | 3    | alice  | alice123 | reviewer |
 | 4    | smith  | smith123 | admin    |
 
-先说明下权限，`user`是最基础的权限，只要是登入用户就算有了`user`权限，`editor`是在`user`的权限上面增加了`editor`的权限，`reviewer`同理，`editor`和`reviewer`属于同一级的权限，`admin`则包含所有权限。获取用户通过我们编些的`userService.getUserByUsername()` 方法。
+说明下权限
+
+`user`：最基础的权限，只要是登入用户就有 `user` 权限
+
+`editor`：在 `user` 权限上面增加了`editor`的权限
+
+`reviewer`：与上同理，`editor` 和 `reviewer` 属于同一级的权限
+
+`admin`：包含所有权限
 
 为了检验权限，我们提供若干个页面
 
@@ -175,7 +183,7 @@ spring.thymeleaf.cache=false
 
 ## Spring Security 配置
 
-首先我们开启方法注解支持：只需要在类上添加`@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)`注解，我们设置`prePostEnabled = true`是为了支持`hasRole()`这类表达式。如果想进一步了解方法注解可以看 [Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security) 这篇文章。
+首先我们开启方法注解支持：只需要在类上添加 `@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)` 注解，我们设置 `prePostEnabled = true` 是为了支持`hasRole()`这类表达式。如果想进一步了解方法注解可以看 [Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security) 这篇文章。
 
 ***SecurityConfig.java***
 
@@ -200,6 +208,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 必须有此方法，Spring Security官方规定必须要有一个密码加密方式。
      * 注意：例如这里用了BCryptPasswordEncoder()的加密方法，那么在保存用户密码的时候也必须使用这种方法，确保前后一致。
+     * 详情参见项目中Database.java中保存用户的逻辑
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -210,10 +219,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 配置Spring Security，下面说明几点注意事项。
      * 1. Spring Security 默认是开启了CSRF的，此时我们提交的POST表单必须有隐藏的字段来传递CSRF，
      * 而且在logout中，我们必须通过POST到 /logout 的方法来退出用户，详见我们的login.html和logout.html.
-     * 2. 开启了rememberMe()功能后，如果我们自定义了rememberMeServices()方法，例如下面，我们只能在
-     * TokenBasedRememberMeServices中设置cookie名称、过期时间等相关配置,
-     * 如果如 .and().rememberMe().rememberMeServices(getRememberMeServices()).rememberMeCookieName("cookie-name")这样
-     * 程序会报错。
+     * 2. 开启了rememberMe()功能后，我们必须提供rememberMeServices，例如下面的getRememberMeServices()方法，
+     * 而且我们只能在TokenBasedRememberMeServices中设置cookie名称、过期时间等相关配置,如果在别的地方同时配置，会报错。
+     * 错误示例：xxxx.and().rememberMe().rememberMeServices(getRememberMeServices()).rememberMeCookieName("cookie-name")
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -226,8 +234,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .rememberMe() // 开启记住密码功能
-                .rememberMeServices(getRememberMeServices())
-                .key(SECRET_KEY) // 此SECRET需要和生成密钥的Token相同
+                .rememberMeServices(getRememberMeServices()) // 必须提供
+                .key(SECRET_KEY) // 此SECRET需要和生成TokenBasedRememberMeServices的密钥相同
                 .and()
                 /*
                  * 默认允许所有路径所有人都可以访问，确保静态资源的正常访问。
@@ -267,9 +275,9 @@ public class UserService {
         }
 
         /*
-         * 此处有坑，之所以这么做是因为Spring Security获得到User后，会把User中的password字段置空，以确保安全，
-         * 为了防止Spring Security修改了我们的源头数据，所以我们复制一个对象提供给Spring Security。如果通过数据库
-         * 方式获取，则没有这种问题需要担心。
+         * 此处有坑，之所以这么做是因为Spring Security获得到User后，会把User中的password字段置空，以确保安全。
+         * 因为Java类是引用传递，为防止Spring Security修改了我们的源头数据，所以我们复制一个对象提供给Spring Security。
+         * 如果通过真实数据库的方式获取，则没有这种问题需要担心。
           */
         return new CustomUser(originUser.getId(), originUser.getUsername(), originUser.getPassword(), originUser.getAuthorities());
     }
@@ -306,7 +314,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 ## 自定义权限注解
 
-我们在开发网站的过程中，比如 `GET /user/editor `这个请求角色为`EDITOR`和`ADMIN`肯定都可以，如果我们在每一个这样的方法上面写一长串的表达式判断，一定很复杂。但是通过自定义权限注解，我们可以通过`@IsEditor`这样的方法来判断，这样一来就简单了很多。进一步了解可以看：[Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
+我们在开发网站的过程中，比如 `GET /user/editor `这个请求角色为 `EDITOR` 和 `ADMIN` 肯定都可以，如果我们在每一个需要判断权限的方法上面写一长串的权限表达式，一定很复杂。但是通过自定义权限注解，我们可以通过 `@IsEditor` 这样的方法来判断，这样一来就简单了很多。进一步了解可以看：[Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
 
 ***IsUser.java***
 
@@ -352,21 +360,23 @@ public @interface IsAdmin {
 
 - `hasRole()`，是否拥有某一个权限
 
--  `hasAnyRole()`，多个权限中有一个即可，如`hasAnyRole("ADMIN","USER")`
-- `hasAuthority()`，`Authority`和`Role`很像，唯一的区别就是Authority前缀多了`ROLE_`，如`hasAuthority("ROLE_ADMIN")`等价于`hasRole("ADMIN")`
+-  `hasAnyRole()`，多个权限中有一个即可，如 `hasAnyRole("ADMIN","USER")`
+- `hasAuthority()`，`Authority` 和 `Role` 很像，唯一的区别就是 `Authority` 前缀多了 `ROLE_` ，如 `hasAuthority("ROLE_ADMIN")` 等价于 `hasRole("ADMIN")` ，可以参考上面   `IsUser.java` 的写法
 -  `hasAnyAuthority()`，同上，多个权限中有一个即可
 - `permitAll()`, `denyAll()`,`isAnonymous()`, `isRememberMe()`，通过字面意思可以理解
-- `isAuthenticated()`, `isFullyAuthenticated()`，这两个区别就是`isFullyAuthenticated()`对认证的安全要求更高。例如用户通过记住密码功能登入到系统进行敏感操作，`isFullyAuthenticated()`会返回`false`，此时我们让用户再一次输入密码确保安全，而`isAuthenticated()`只要是登入用户均返回`true`。
-- `principal()`, `authentication()`，例如我们想获取登入用户的id，可以通过`principal()`得到的`Object`获取，实际上`principal()`获取的`Object`基本上可以等同我们自己编写的`CustomUser`。而`authentication()`得到的`Authentication`是`Principal的父类`，相关操作可看`Authentication`的源码。进一步了解可以看后面*获取用户数据*
+- `isAuthenticated()`, `isFullyAuthenticated()`，这两个区别就是`isFullyAuthenticated()`对认证的安全要求更高。例如用户通过**记住密码功能**登入到系统进行敏感操作，`isFullyAuthenticated()`会返回`false`，此时我们可以让用户再输入一次密码以确保安全，而 `isAuthenticated()` 只要是登入用户均返回`true`。
+- `principal()`, `authentication()`，例如我们想获取登入用户的id，可以通过`principal()` 返回的 `Object` 获取，实际上 `principal()` 返回的 `Object` 基本上可以等同我们自己编写的 `CustomUser` 。而 `authentication()` 返回的 `Authentication` 是 `Principal` 的父类，相关操作可看 `Authentication` 的源码。进一步了解可以看后面**Controller编写中获取用户数据的四种方法**
 - `hasPermission()`，参考字面意思即可
 
 如果想进一步了解，可以参考[Intro to Spring Security Expressions](https://www.baeldung.com/spring-security-expressions)
 
 ## 添加Thymeleaf支持
 
-我们通过`thymeleaf-extras-springsecurity`来添加Thymeleaf对Spring Security的支持。
+我们通过 `thymeleaf-extras-springsecurity` 来添加Thymeleaf对Spring Security的支持。
 
 ***Maven配置***
+
+上面的Maven配置已经加过了
 
 ```xml
 <dependency>
@@ -377,7 +387,7 @@ public @interface IsAdmin {
 
 ***使用例子***
 
-注意我们在html中添加了`xmlns:sec`的支持
+注意我们要在html中添加 `xmlns:sec` 的支持
 
 ```html
 <!DOCTYPE html>
@@ -397,9 +407,11 @@ public @interface IsAdmin {
 
 如果想进一步了解请看文档 [thymeleaf-extras-springsecurity](https://github.com/thymeleaf/thymeleaf-extras-springsecurity)
 
-## Controller的编写
+## Controller编写
 
 ***IndexController.java***
+
+本控制器没有任何的权限规定
 
 ```java
 @Controller
@@ -467,12 +479,17 @@ public class UserController {
 }
 ```
 
+***注意***
+
+* 如果有安全控制的方法 A 被同一个类中别的方法调用，那么方法 A 的权限控制会被忽略，私有方法同样会受到影响
+* Spring 的 `SecurityContext` 是线程绑定的，如果我们在当前的线程中新建了别的线程，那么他们的 `SecurityContext` 是不共享的，进一步了解请看 (Spring Security Context Propagation with @Async)[https://www.baeldung.com/spring-security-async-principal-propagation]
+
 ## Html的编写
 
-在编写html的时候，基本上就是大同小异了，就是注意一点，**如果开启了CSRF，在编写表单POST请求的时候添加上隐藏字段，如`<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>`，不过大家其实不用加也没事，因为Thymeleaf自动会加上去的:)**
+在编写html的时候，基本上就是大同小异了，就是注意一点，**如果开启了CSRF，在编写表单POST请求的时候添加上隐藏字段，如 **`<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>` **，不过大家其实不用加也没事，因为Thymeleaf自动会加上去的😀**
 
 ## 总结
 
 教程粗糙，欢迎指正！
 
-如需深入了解，推荐看看 [Security with Spring](https://www.baeldung.com/security-spring)
+如需深入了解，如果想系统的学习可以看看 [Security with Spring](https://www.baeldung.com/security-spring)
