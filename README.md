@@ -1,4 +1,4 @@
-# Spring-Boot-Security-Thymeleaf-Demo
+# Spring Boot+Spring Security+Thymeleaf 简单教程
 因为有一个项目需采用MVC构架，所以学习了Spring Security并记录下来，希望大家一起学习提供意见
 
 GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Shiro)
