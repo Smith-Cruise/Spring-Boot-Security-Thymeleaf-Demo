@@ -20,33 +20,33 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问。网址规则自行看教程后面。
 
-**首页**
+***首页***
 
 ![首页](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/index.png?raw=true)
 
-**登入**
+***登入***
 
 ![登入](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/login.png?raw=true)
 
-**登出**
+***登出***
 
 ![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/logout.png?raw=true)
 
-**Home页面**
+***Home页面***
 
 ![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/home.png?raw=true)
 
-**Admin页面**
+***Admin页面***
 
 ![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/admin.png?raw=true)
 
-**403无权限页面**
+***403无权限页面***
 
 ![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/403.png?raw=true)
 
 ## Spring Security 基本原理
 
-**Spring Security 过滤器链**
+***Spring Security 过滤器链***
 
 Spring Security实现了一系列的过滤器链，就按照下面顺序一个一个执行下去。
 
@@ -57,7 +57,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 5. `FilterSecurityInterceptor.class` 拦截器最终决定请求能否通过
 6. `Controller` 我们最后的控制器
 
-**相关类说明**
+***相关类说明***
 
 * `User.class` 注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的`CustomUser.java`
 * `UserDetailsService` 也是Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()`这个方法。详见代码中的`CustomUserDetailsService.java`。
@@ -92,7 +92,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 
 ## 代码配置
 
-**Maven 配置**
+***Maven 配置***
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -163,7 +163,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 </project>
 ```
 
-**application.properties配置**
+***application.properties配置***
 
 为了使热加载（这样修改模板后无需重启Tomcat）生效，我们需要在Spring Boot的配置文件上面加上一段话
 
@@ -250,7 +250,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-######  UserService.java
+***UserService.java***
 
 自己模拟数据库操作的`Service`，用于向自己通过`HashMap`模拟的数据源获取数据。
 
@@ -276,7 +276,7 @@ public class UserService {
 }
 ```
 
-###### CustomUserDetailsService.java
+***CustomUserDetailsService.java***
 
 ```java
 /**
@@ -308,7 +308,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 我们在开发网站的过程中，比如 `GET /user/editor `这个请求角色为`EDITOR`和`ADMIN`肯定都可以，如果我们在每一个这样的方法上面写一长串的表达式判断，一定很复杂。但是通过自定义权限注解，我们可以通过`@IsEditor`这样的方法来判断，这样一来就简单了很多。进一步了解可以看：[Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
 
-###### IsUser.java
+***IsUser.java***
 
 ```java
 @Target({ElementType.METHOD, ElementType.TYPE})
@@ -318,7 +318,7 @@ public @interface IsUser {
 }
 ```
 
-###### IsEditor.java
+***IsEditor.java***
 
 ```java
 @Target({ElementType.METHOD, ElementType.TYPE})
@@ -328,7 +328,7 @@ public @interface IsEditor {
 }
 ```
 
-###### IsReviewer.java
+***IsReviewer.java***
 
 ```java
 @Target({ElementType.METHOD, ElementType.TYPE})
@@ -338,7 +338,7 @@ public @interface IsReviewer {
 }
 ```
 
-###### IsAdmin.java
+***IsAdmin.java***
 
 ```java
 @Target({ElementType.METHOD, ElementType.TYPE})
@@ -348,7 +348,7 @@ public @interface IsAdmin {
 }
 ```
 
-###### Spring Security自带表达式
+***Spring Security自带表达式***
 
 - `hasRole()`，是否拥有某一个权限
 
@@ -366,7 +366,7 @@ public @interface IsAdmin {
 
 我们通过`thymeleaf-extras-springsecurity`来添加Thymeleaf对Spring Security的支持。
 
-###### Maven配置
+***Maven配置***
 
 ```xml
 <dependency>
@@ -375,7 +375,7 @@ public @interface IsAdmin {
 </dependency>
 ```
 
-###### 使用例子
+***使用例子***
 
 注意我们在html中添加了`xmlns:sec`的支持
 
@@ -399,7 +399,7 @@ public @interface IsAdmin {
 
 ## Controller的编写
 
-###### IndexController.java
+***IndexController.java***
 
 ```java
 @Controller
@@ -422,7 +422,7 @@ public class IndexController {
 }
 ```
 
-###### UserController.java
+***UserController.java***
 
 在这个控制器中，我综合展示了自定义注解的使用和4种获取用户信息的方式
 
