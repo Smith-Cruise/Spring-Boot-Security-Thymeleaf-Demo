@@ -16,7 +16,33 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 如果需要前后端分离的安全框架搭建教程可以参考：[Shiro+JWT+Spring Boot Restful简易教程]( https://github.com/Smith-Cruise/Spring-Boot-Shiro)
 
+## 项目演示
 
+如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问。网址规则自行看教程后面。
+
+###### 首页
+
+![首页](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/index.png?raw=true)
+
+###### 登入
+
+![登入](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/login.png?raw=true)
+
+###### 登出
+
+![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/logout.png?raw=true)
+
+###### Home页面
+
+![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/home.png?raw=true)
+
+###### Admin页面
+
+![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/admin.png?raw=true)
+
+###### 403无权限页面
+
+![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/403.png?raw=true)
 
 ## Spring Security 基本原理
 
