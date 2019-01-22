@@ -16,12 +16,6 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 如果需要前后端分离的安全框架搭建教程可以参考：[Shiro+JWT+Spring Boot Restful简易教程]( https://github.com/Smith-Cruise/Spring-Boot-Shiro)
 
-## 目录
-
-[TOC]
-
-
-
 ## 项目演示
 
 如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问。网址规则自行看教程后面。
@@ -52,7 +46,7 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 ## Spring Security 基本原理
 
-###### Spring Security 过滤器链
+**Spring Security 过滤器链**
 
 Spring Security实现了一系列的过滤器链，就按照下面顺序一个一个执行下去。
 
@@ -63,7 +57,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 5. `FilterSecurityInterceptor.class` 拦截器最终决定请求能否通过
 6. `Controller` 我们最后的控制器
 
-###### 相关类说明
+**相关类说明**
 
 * `User.class` 注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的`CustomUser.java`
 * `UserDetailsService` 也是Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()`这个方法。详见代码中的`CustomUserDetailsService.java`。
@@ -98,7 +92,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 
 ## 代码配置
 
-###### Maven 配置
+**Maven 配置**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -169,7 +163,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 </project>
 ```
 
-###### application.properties配置
+**application.properties配置**
 
 为了使热加载（这样修改模板后无需重启Tomcat）生效，我们需要在Spring Boot的配置文件上面加上一段话
 
@@ -183,7 +177,7 @@ spring.thymeleaf.cache=false
 
 首先我们开启方法注解支持：只需要在类上添加`@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)`注解，我们设置`prePostEnabled = true`是为了支持`hasRole()`这类表达式。如果想进一步了解方法注解可以看 [Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security) 这篇文章。
 
-###### SecurityConfig.java
+***SecurityConfig.java***
 
 ```java
 /**
