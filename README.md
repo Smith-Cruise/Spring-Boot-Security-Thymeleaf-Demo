@@ -482,7 +482,7 @@ public class UserController {
 ***注意***
 
 * 如果有安全控制的方法 A 被同一个类中别的方法调用，那么方法 A 的权限控制会被忽略，私有方法同样会受到影响
-* Spring 的 `SecurityContext` 是线程绑定的，如果我们在当前的线程中新建了别的线程，那么他们的 `SecurityContext` 是不共享的，进一步了解请看 (Spring Security Context Propagation with @Async)[https://www.baeldung.com/spring-security-async-principal-propagation]
+* Spring 的 `SecurityContext` 是线程绑定的，如果我们在当前的线程中新建了别的线程，那么他们的 `SecurityContext` 是不共享的，进一步了解请看 [Spring Security Context Propagation with @Async](https://www.baeldung.com/spring-security-async-principal-propagation)
 
 ## Html的编写
 
