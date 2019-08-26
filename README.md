@@ -1,4 +1,4 @@
-# Spring Boot+Spring Security+Thymeleaf 简单教程
+# Spring Boot + Spring Security + Thymeleaf 简单教程
 因为有一个项目需采用MVC构架，所以学习了Spring Security并记录下来，希望大家一起学习提供意见
 
 GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo)
@@ -486,7 +486,7 @@ public class UserController {
 
 ## Html的编写
 
-在编写html的时候，基本上就是大同小异了，就是注意一点，**如果开启了CSRF，在编写表单POST请求的时候添加上隐藏字段，如 **`<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>` **，不过大家其实不用加也没事，因为Thymeleaf自动会加上去的😀**
+在编写html的时候，基本上就是大同小异了，就是注意一点，**如果开启了CSRF，在编写表单POST请求的时候添加上隐藏字段，如 **`<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>` **，不过大家其实不用加也没事，因为Thymeleaf自动会加上去的😀。**
 
 ## 总结
 
