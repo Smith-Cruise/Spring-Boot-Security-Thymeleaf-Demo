@@ -1,9 +1,11 @@
 # Spring Boot + Spring Security + Thymeleaf 简单教程
 因为有一个项目需采用MVC构架，所以学习了Spring Security并记录下来，希望大家一起学习提供意见
 
-GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo)
+GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo)。
 
-**如果有疑问，请在GitHub中发布issue，我有空会为大家解答的**
+原文地址：[https://www.inlighting.org/archives/spring-boot-security-thymeleaf.html](https://www.inlighting.org/archives/spring-boot-security-thymeleaf.html)。
+
+**如果有疑问，请在 GitHub 中发布 issue，我有空会为大家解答的**
 
 本项目基于Spring Boot 2 + Spring Security 5 + Thymeleaf 2 + JDK11（你也可以用8，应该区别不大）
 
@@ -14,11 +16,11 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 * 自定义权限注解
 * 记住密码功能
 
-如果需要前后端分离的安全框架搭建教程可以参考：[Shiro+JWT+Spring Boot Restful简易教程]( https://github.com/Smith-Cruise/Spring-Boot-Shiro)
+如果需要前后端分离的安全框架搭建教程可以参考：[Spring Boot 2 + Spring Security 5 + JWT 的单页应用Restful解决方案]( https://github.com/Smith-Cruise/Spring-Boot-Security-JWT-SPA)
 
 ## 项目演示
 
-如果想要直接体验，直接`clone`项目，运行`mvn spring-boot:run`命令即可进行访问，网址规则自行看教程后面
+如果想要直接体验，直接 `clone` 项目，运行 `mvn spring-boot:run` 命令即可进行访问，网址规则自行看教程后面
 
 ***首页***
 
@@ -50,8 +52,8 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 Spring Security实现了一系列的过滤器链，就按照下面顺序一个一个执行下去。
 
-1. `....class`一些自定义过滤器（在配置的时候你可以自己选择插到哪个过滤器之前），因为这个需求因人而异，本文不探讨，大家可以自己研究
-2. `UsernamePasswordAithenticationFilter.class`Spring Security 自带的表单登入验证过滤器，也是本文主要使用的过滤器
+1. `....class` 一些自定义过滤器（在配置的时候你可以自己选择插到哪个过滤器之前），因为这个需求因人而异，本文不探讨，大家可以自己研究
+2. `UsernamePasswordAithenticationFilter.class` Spring Security 自带的表单登入验证过滤器，也是本文主要使用的过滤器
 3. `BasicAuthenticationFilter.class`
 4. `ExceptionTranslation.class` 异常解释器
 5. `FilterSecurityInterceptor.class` 拦截器最终决定请求能否通过
@@ -59,8 +61,8 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 
 ***相关类说明***
 
-* `User.class` ：注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的`CustomUser.java`
-* `UserDetailsService.class`： Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST过来的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()`这个方法。详见代码中的`CustomUserDetailsService.java`。
+* `User.class` ：注意这个类不是我们自己写的，而是Spring Security官方提供的，他提供了一些基础的功能，我们可以通过继承这个类来扩充方法。详见代码中的 `CustomUser.java`
+* `UserDetailsService.class`： Spring Security官方提供的一个接口，里面只有一个方法`loadUserByUsername()` ，Spring Security会调用这个方法来获取数据库中存在的数据，然后和用户POST过来的用户名密码进行比对，从而判断用户的用户名密码是否正确。所以我们需要自己实现`loadUserByUsername()` 这个方法。详见代码中的 `CustomUserDetailsService.java`。
 
 ## 项目逻辑
 
@@ -77,9 +79,9 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 
 `user`：最基础的权限，只要是登入用户就有 `user` 权限
 
-`editor`：在 `user` 权限上面增加了`editor`的权限
+`editor`：在 `user` 权限上面增加了 `editor` 的权限
 
-`reviewer`：与上同理，`editor` 和 `reviewer` 属于同一级的权限
+`reviewer`：与上同理，`editor` 和  `reviewer` 属于同一级的权限
 
 `admin`：包含所有权限
 
@@ -173,7 +175,7 @@ Spring Security实现了一系列的过滤器链，就按照下面顺序一个�
 
 ***application.properties配置***
 
-为了使热加载（这样修改模板后无需重启Tomcat）生效，我们需要在Spring Boot的配置文件上面加上一段话
+为了使热加载（这样修改模板后无需重启 Tomcat ）生效，我们需要在Spring Boot的配置文件上面加上一段话
 
 ```properties
 spring.thymeleaf.cache=false
@@ -183,7 +185,7 @@ spring.thymeleaf.cache=false
 
 ## Spring Security 配置
 
-首先我们开启方法注解支持：只需要在类上添加 `@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)` 注解，我们设置 `prePostEnabled = true` 是为了支持`hasRole()`这类表达式。如果想进一步了解方法注解可以看 [Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security) 这篇文章。
+首先我们开启方法注解支持：只需要在类上添加 `@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)` 注解，我们设置 `prePostEnabled = true` 是为了支持 `hasRole()` 这类表达式。如果想进一步了解方法注解可以看 [Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security) 这篇文章。
 
 ***SecurityConfig.java***
 
@@ -314,7 +316,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 ## 自定义权限注解
 
-我们在开发网站的过程中，比如 `GET /user/editor `这个请求角色为 `EDITOR` 和 `ADMIN` 肯定都可以，如果我们在每一个需要判断权限的方法上面写一长串的权限表达式，一定很复杂。但是通过自定义权限注解，我们可以通过 `@IsEditor` 这样的方法来判断，这样一来就简单了很多。进一步了解可以看：[Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
+我们在开发网站的过程中，比如 `GET /user/editor ` 这个请求角色为 `EDITOR` 和 `ADMIN` 肯定都可以，如果我们在每一个需要判断权限的方法上面写一长串的权限表达式，一定很复杂。但是通过自定义权限注解，我们可以通过 `@IsEditor` 这样的方法来判断，这样一来就简单了很多。进一步了解可以看：[Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
 
 ***IsUser.java***
 
@@ -368,7 +370,7 @@ public @interface IsAdmin {
 - `principal()`, `authentication()`，例如我们想获取登入用户的id，可以通过`principal()` 返回的 `Object` 获取，实际上 `principal()` 返回的 `Object` 基本上可以等同我们自己编写的 `CustomUser` 。而 `authentication()` 返回的 `Authentication` 是 `Principal` 的父类，相关操作可看 `Authentication` 的源码。进一步了解可以看后面**Controller编写中获取用户数据的四种方法**
 - `hasPermission()`，参考字面意思即可
 
-如果想进一步了解，可以参考[Intro to Spring Security Expressions](https://www.baeldung.com/spring-security-expressions)
+如果想进一步了解，可以参考 [Intro to Spring Security Expressions](https://www.baeldung.com/spring-security-expressions)。
 
 ## 添加Thymeleaf支持
 
@@ -405,7 +407,7 @@ public @interface IsAdmin {
 </html>
 ```
 
-如果想进一步了解请看文档 [thymeleaf-extras-springsecurity](https://github.com/thymeleaf/thymeleaf-extras-springsecurity)
+如果想进一步了解请看文档 [thymeleaf-extras-springsecurity](https://github.com/thymeleaf/thymeleaf-extras-springsecurity)。
 
 ## Controller编写
 
@@ -492,4 +494,4 @@ public class UserController {
 
 教程粗糙，欢迎指正！
 
-如需深入了解，如果想系统的学习可以看看 [Security with Spring](https://www.baeldung.com/security-spring)
+如需深入了解，如果想系统的学习可以看看 [Security with Spring](https://www.baeldung.com/security-spring)。
