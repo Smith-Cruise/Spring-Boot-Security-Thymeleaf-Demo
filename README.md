@@ -3,7 +3,7 @@
 
 GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo)。
 
-原文地址：[https://www.inlighting.org/archives/spring-boot-security-thymeleaf.html](https://www.inlighting.org/archives/spring-boot-security-thymeleaf.html)。
+原文地址：[https://www.inlighting.org/2019/spring-boot-security-thymeleaf.html](https://www.inlighting.org/2019/spring-boot-security-thymeleaf.html)。
 
 **如果有疑问，请在 GitHub 中发布 issue，我有空会为大家解答的**
 
