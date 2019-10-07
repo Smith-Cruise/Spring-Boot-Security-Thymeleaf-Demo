@@ -36,15 +36,15 @@ GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-D
 
 ***Home页面***
 
-![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/home.png?raw=true)
+![Home](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/home.png?raw=true)
 
 ***Admin页面***
 
-![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/admin.png?raw=true)
+![Admin](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/admin.png?raw=true)
 
 ***403无权限页面***
 
-![登出](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/403.png?raw=true)
+![403](https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo/blob/master/file/403.png?raw=true)
 
 ## Spring Security 基本原理
 
