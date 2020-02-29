@@ -3,8 +3,6 @@
 
 GitHub地址：[https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo]( https://github.com/Smith-Cruise/Spring-Boot-Security-Thymeleaf-Demo)。
 
-原文地址：[https://www.inlighting.org/2019/spring-boot-security-thymeleaf.html](https://www.inlighting.org/2019/spring-boot-security-thymeleaf.html)。
-
 **如果有疑问，请在 GitHub 中发布 issue，我有空会为大家解答的**
 
 本项目基于Spring Boot 2 + Spring Security 5 + Thymeleaf 2 + JDK11（你也可以用8，应该区别不大）
